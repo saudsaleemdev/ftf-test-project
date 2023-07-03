@@ -1,6 +1,5 @@
 module Api
   class EncryptionsController < ActionController::Base
-    MAX_MESSAGE_LENGTH = 1000
     DEFALUT_ENCRYPTION_ALGO = 13
 
     skip_before_action :verify_authenticity_token, only: [:create]
@@ -25,11 +24,11 @@ module Api
     end 
   
     def valid?
-      render_error("Message should not exceed #{MAX_MESSAGE_LENGTH} characters.") unless valid_length?  
+      render_error("Message should not exceed #{Message::MAX_MESSAGE_LENGTH} characters.") unless valid_length?  
     end
   
     def valid_length?
-      message.length <= MAX_MESSAGE_LENGTH
+      message.length <= Message::MAX_MESSAGE_LENGTH
     end
   
     def save_original_message
