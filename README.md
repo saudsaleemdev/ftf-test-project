@@ -1,24 +1,46 @@
-# README
+# FTF Assessments
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Install
+### Clone the repository
 
-Things you may want to cover:
+```shell
+git clone https://github.com/saudsaleemdev/ftf-test-project.git
+cd ftf-test-project
+```
+### Dependencies
 
-* Ruby version
+* `ruby -> 3.0.0 `
+* `rails -> 7.0.6`
+* You should have postgres installed on your system - [see here for more info](https://www.postgresql.org/download/macosx/)
+### Check your Ruby version
 
-* System dependencies
+```shell
+ruby -v
+```
 
-* Configuration
+You should expect `ruby 3.0.0`
 
-* Database creation
+If not, install the right ruby version using [rvm](https://rvm.io/) (it could take a while):
 
-* Database initialization
+```shell
+rvm install 3.0.0
+```
 
-* How to run the test suite
+### Install dependencies
 
-* Services (job queues, cache servers, search engines, etc.)
+Using [Bundler](https://github.com/bundler/bundler)
 
-* Deployment instructions
+```shell
+bundle install
+```
 
-* ...
+### Initialize the database
+
+```shell
+rails db:setup
+```
+## Server
+
+```shell
+rails s
+```
