@@ -6,11 +6,11 @@ require "rails_helper"
 RSpec.describe Api::EncryptionsController, type: :controller do
   describe "POST #create" do
     let(:valid_message) { "Valid message" }
-    let(:invalid_message) { "a" * (Message::MAX_MESSAGE_LENGTH + 1) }
+    let(:invalid_message) { "a" * (Message::MAX_CONTENT_LENGTH + 1) }
 
     context "with a valid message" do
       before do
-        post :create, params: {string: valid_message}
+        post :create, params: {content: valid_message}
       end
 
       it "returns the encrypted message" do
@@ -25,7 +25,7 @@ RSpec.describe Api::EncryptionsController, type: :controller do
 
     context "with an invalid message" do
       before do
-        post :create, params: {string: invalid_message}
+        post :create, params: {content: invalid_message}
       end
 
       it "returns an error message" do

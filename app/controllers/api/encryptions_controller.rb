@@ -3,24 +3,22 @@
 module Api
   class EncryptionsController < ActionController::Base
     skip_before_action :verify_authenticity_token
-    before_action :original_content
+    before_action :check_content_param
 
     def create
-      encryptions_service = StringEncryptionService.new(original_content)
+      encryption_service = StringEncryption.new(@content)
 
-      if encryptions_service.rot13
-        render json: encryptions_service.message, serializer: EncryptionSerializer, status: :ok
-      else
-        render_error(encryptions_service.error)
-      end
+      return render_error(encryption_service.error) unless encryption_service.rotate
+
+      render json: encryption_service.message, serializer: EncryptionSerializer, status: :ok
     end
 
     private
 
-    def original_content
-      @original_content ||= params.require(:string)
-    rescue ActionController::ParameterMissing => e
-      render_error("Required parameter is missing: #{e.param}")
+    def check_content_param
+      @content = params.require(:content)
+    rescue ActionController::ParameterMissing
+      render_error("Content param is missing")
     end
 
     def render_error(error)

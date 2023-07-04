@@ -2,15 +2,15 @@ module Resourceable
   extend ActiveSupport::Concern
 
   included do
-    before_action :find_resource, only: [:edit, :update, :destroy, :show]
+    before_action :find_resource, only: %i[edit update destroy show]
   end
 
   def index
-    if paginate?
-      @resources = policy_scope(klass).page(params[:page])
-    else
-      @resources = policy_scope(klass)
-    end
+    @resources = if paginate?
+                   policy_scope(klass).page(params[:page])
+                 else
+                   policy_scope(klass)
+                 end
     authorize klass
   end
 
@@ -20,8 +20,7 @@ module Resourceable
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @resource.update(resource_params)
@@ -42,9 +41,7 @@ module Resourceable
 
   def create
     @resource = klass.new(resource_params)
-    if @resource.respond_to?(:company_id)
-      @resource.company = current_user.company
-    end
+    @resource.company = current_user.company if @resource.respond_to?(:company_id)
     authorize @resource
     if @resource.save
       redirect_to redirect_to_path, notice: "Created"
@@ -61,19 +58,19 @@ module Resourceable
   private
 
   def find_resource
-    if klass.respond_to?(:friendly_id) && !klass.respond_to?(:use_id)
-      @resource = policy_scope(klass).friendly.find(params[:id])
-    else
-      @resource = policy_scope(klass).find(params[:id])
-    end
+    @resource = if klass.respond_to?(:friendly_id) && !klass.respond_to?(:use_id)
+                  policy_scope(klass).friendly.find(params[:id])
+                else
+                  policy_scope(klass).find(params[:id])
+                end
     authorize @resource
     get_props
   end
 
   def get_props
-    if get_props?
-      @props = JSON.parse(render_to_string("api/#{controller_name}/show"))
-    end
+    return unless get_props?
+
+    @props = JSON.parse(render_to_string("api/#{controller_name}/show"))
   end
 
   def redirect_to_path

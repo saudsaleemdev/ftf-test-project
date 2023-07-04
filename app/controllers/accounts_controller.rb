@@ -1,7 +1,6 @@
 class AccountsController < ApplicationController
   include Resourceable
 
-
   def update
     if @resource.update(resource_params)
       redirect_to [controller_name], notice: "Successfully Updated #{klass_name}"
