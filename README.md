@@ -10,7 +10,7 @@ cd ftf-test-project
 ### Dependencies
 
 * `ruby -> 3.0.0 `
-* `rails -> 6.1.7`
+* `rails -> 7.0.6`
 * You should have postgres installed on your system - [see here for more info](https://www.postgresql.org/download/macosx/)
 ### Check your Ruby version
 
